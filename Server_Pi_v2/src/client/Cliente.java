@@ -15,16 +15,28 @@ public class Cliente {
 		String key = "1234567891234567";
 		
 		try{
+			//Cria o socket com o nome do servidor e a porta
+			Socket client = new Socket("Ferretti-PC", 10010);	
+			System.out.println("Cliente- CONECTADO");
+			
+			//Pega IP e MAC
+			String mac = HandshakeClient.HandShake();
+			
+			//System.out.println("Cliente- MAC: "+mac);
+			//Envia para o servidor
+			ObjectOutputStream envioMac = new ObjectOutputStream(client.getOutputStream());
+			envioMac.writeObject(mac);
+			
+			//Encerra o processo
+			envioMac.close();
+			System.out.println("Cliente- Conexão encerrada");
+			
 			while(true){
-				//Cria o socket com o nome do servidor e a porta
-				Socket client = new Socket("Ferretti-PC", 10010);	
-				System.out.println("Cliente- CONECTADO");
-				
 				//Captura input do teclado
 				BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 				System.out.println("Insira o texto a ser enviado: ");
 				String text = in.readLine();
-			
+				
 				//Encripta a leitura
 				text = Encrypt.encrypt(text, key);
 				System.out.println("Cliente- Cypher: "+text);
