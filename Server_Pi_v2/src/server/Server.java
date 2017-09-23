@@ -66,7 +66,7 @@ public class Server extends Thread{
 //            	ObjectOutputStream saida = new ObjectOutputStream(aceitar.getOutputStream());
 //            	((ObjectOutput) aceitar).flush();
 //            	saida.writeObject("transmissão ok");
-  
+  //
             
 		}catch(IOException e){
 			System.out.println("Servidor- IOException "+e.getMessage());
