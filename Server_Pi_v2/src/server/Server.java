@@ -45,32 +45,54 @@ public class Server extends Thread{
 	public void start(){
 		
 		String key = "1234567891234567";
-		
-		try{
-			// Cria uma buffer que irá armazenar as informações enviadas pelo cliente
-			BufferedReader entrada = new BufferedReader(new InputStreamReader(aceitar.getInputStream()));
+		boolean read1 = false;
+		String MAC="";
+		if(read1 ==false){
 			
-            /* Faz a leitura das informações enviadas pelo cliente as amazenam na variável "cypher"
-             * e decifra a informação, exibindo no console
-            */
-            String cypher = entrada.readLine();
-
-            int aux = cypher.length();
-            cypher = cypher.substring(7, aux);
-            System.out.println("Servidor- Informação original: "+ cypher);	
-          //  System.out.println("Servidor- Decrypt: "+ Decrypt.decrypt(cypher, key)); 	
-            	
-            	
-            	
-//            	// Cria uma stream de sáida para retorno das informações ao cliente
-//            	ObjectOutputStream saida = new ObjectOutputStream(aceitar.getOutputStream());
-//            	((ObjectOutput) aceitar).flush();
-//            	saida.writeObject("transmissão ok");
-  
+			try{
+				// Cria uma buffer que irá armazenar as informações enviadas pelo cliente
+				BufferedReader entrada = new BufferedReader(new InputStreamReader(aceitar.getInputStream()));
+			
+				/* Faz a leitura das informações enviadas pelo cliente as amazenam na variável "cypher"
+				* e decifra a informação, exibindo no console*/
+				MAC = entrada.readLine();
+				int aux=MAC.length();
+				MAC = MAC.substring(7, aux);
+				read1= true;
+				System.out.println("MAC ACEITO");
             
-		}catch(IOException e){
-			System.out.println("Servidor- IOException "+e.getMessage());
+			}catch(IOException e){
+				System.out.println("Servidor- IOException "+e.getMessage());
+			}
+			
 		}
+		
+		if(Handshake.buscaMac(MAC)==true){
+			try{
+				// Cria uma buffer que irá armazenar as informações enviadas pelo cliente
+				BufferedReader entrada = new BufferedReader(new InputStreamReader(aceitar.getInputStream()));
+				
+	            /* Faz a leitura das informações enviadas pelo cliente as amazenam na variável "cypher"
+	             * e decifra a informação, exibindo no console
+	            */
+	            String cypher = entrada.readLine();
+
+	            int aux = cypher.length();
+	            cypher = cypher.substring(7, aux);
+	            System.out.println("Servidor- Informação original: "+ cypher);	
+	            System.out.println("Servidor- Decrypt: "+ Decrypt.decrypt(cypher, key)); 	
+	            	
+	            	
+	  
+	  
+	            
+			}catch(IOException e){
+				System.out.println("Servidor- IOException "+e.getMessage());
+			}
+		}else{
+			System.out.println("SERVIDOR - ERRO DE VALIDAÇÂO MAC ADRESS");
+		}
+		
 	}
 
 }
