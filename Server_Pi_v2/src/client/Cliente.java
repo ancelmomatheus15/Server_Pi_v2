@@ -16,6 +16,10 @@ public class Cliente {
 		
 		try{
 			while(true){
+				//Cria o socket com o nome do servidor e a porta
+				Socket client = new Socket("Ferretti-PC", 10010);	
+				System.out.println("Cliente- CONECTADO");
+				
 				//Captura input do teclado
 				BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 				System.out.println("Insira o texto a ser enviado: ");
@@ -24,10 +28,6 @@ public class Cliente {
 				//Encripta a leitura
 				text = Encrypt.encrypt(text, key);
 				System.out.println("Cliente- Cypher: "+text);
-			
-				//Cria o socket com o nome do servidor e a porta
-				Socket client = new Socket("Ferretti-PC", 10010);	
-				System.out.println("Cliente- CONECTADO");
 			
 				//Envia para o servidor
 				ObjectOutputStream envio = new ObjectOutputStream(client.getOutputStream());
