@@ -15,10 +15,11 @@ public class Handshake {
 		macs = leTxt();
 		
 		for (String string : macs) {
-			if(buscaMacs.equals(string)) {
+			if(string.equals(buscaMacs)) {
 				return true;
 			}
 			else {
+				System.out.println("MAC ACEITO");
 				return false;
 			}
 		}
@@ -29,16 +30,16 @@ public class Handshake {
 	
 private static List leTxt() {
 		
-		File arquivo = new File("C:\\Users\\Ferretti\\Desktop\\regMac.txt");
-		List<String> enderecos = new ArrayList<String>();
+		File arquivo = new File("C:\\Users\\Matheus Ancelmo\\Desktop\\regMac.txt");
+		List<String> enderecos = new ArrayList<String>();		
 		
 		try {
 			FileReader leitorArquivo = new FileReader(arquivo); 
 			BufferedReader leitor = new BufferedReader(leitorArquivo);
 			String texto = null;
 		
-			while(leitor.readLine() != null){
-				enderecos.add(leitor.readLine());
+			while((texto = leitor.readLine()) != null){
+				enderecos.add(texto);
 			}
 		
 			leitorArquivo.close();

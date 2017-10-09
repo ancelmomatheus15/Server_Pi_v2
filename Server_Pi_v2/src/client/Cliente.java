@@ -41,6 +41,10 @@ public class Cliente {
 				text = Encrypt.encrypt(text, key);
 				System.out.println("Cliente- Cypher: "+text);
 			
+				//Calculo do CRC
+				int CRCvalue = CRC.calcCRC(text);
+				System.out.println("CRC: "+CRCvalue);
+				
 				//Envia para o servidor
 				ObjectOutputStream envio = new ObjectOutputStream(client.getOutputStream());
 				envio.writeObject(text);

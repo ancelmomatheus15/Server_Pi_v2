@@ -9,6 +9,8 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import client.CRC;
+
 
 
 public class Server extends Thread{
@@ -59,7 +61,6 @@ public class Server extends Thread{
 				int aux=MAC.length();
 				MAC = MAC.substring(7, aux);
 				read1= true;
-				System.out.println("MAC ACEITO");
             
 			}catch(IOException e){
 				System.out.println("Servidor- IOException "+e.getMessage());
@@ -68,6 +69,9 @@ public class Server extends Thread{
 		}
 		
 		if(Handshake.buscaMac(MAC)==true){
+			System.out.println("HANDSHAKE: OK");
+			int packCRC;
+			
 			try{
 				// Cria uma buffer que irá armazenar as informações enviadas pelo cliente
 				BufferedReader entrada = new BufferedReader(new InputStreamReader(aceitar.getInputStream()));
@@ -75,17 +79,27 @@ public class Server extends Thread{
 	            /* Faz a leitura das informações enviadas pelo cliente as amazenam na variável "cypher"
 	             * e decifra a informação, exibindo no console
 	            */
-	            String cypher = entrada.readLine();
+				
+				String cypher = null;
+				while(cypher == null){
+					cypher = entrada.readLine();
+				}
 
 	            int aux = cypher.length();
-	            cypher = cypher.substring(7, aux);
-	            System.out.println("Servidor- Informação original: "+ cypher);	
-	            System.out.println("Servidor- Decrypt: "+ Decrypt.decrypt(cypher, key)); 	
-	            	
-	            	
-	  
-	  
+	            cypher = cypher.substring(11, aux);
+	            packCRC = Integer.parseInt(cypher.substring(7, 11));
 	            
+	            //validar se a mensagem foi corrompida
+	            if (CRC.calcCRC(cypher) == packCRC){//como incluir mais coisas no envio
+	            	System.out.println("CRC: OK");
+	            	
+	            	System.out.println("Servidor- Informação original: "+ cypher);	
+	            	System.out.println("Servidor- Decrypt: "+ Decrypt.decrypt(cypher, key)); 
+	            }
+	            else{
+	            	System.out.println("ERRO: Mensagem corrompida");
+	            }  	
+
 			}catch(IOException e){
 				System.out.println("Servidor- IOException "+e.getMessage());
 			}
