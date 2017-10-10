@@ -1,6 +1,7 @@
 package client;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -19,16 +20,11 @@ public class Cliente {
 			Socket client = new Socket("Ferretti-PC", 10010);	
 			System.out.println("Cliente- CONECTADO");
 			
-			//Pega IP e MAC
-			String mac = HandshakeClient.HandShake();
-			
-			//System.out.println("Cliente- MAC: "+mac);
-			//Envia para o servidor
-			ObjectOutputStream envio = new ObjectOutputStream(client.getOutputStream());
-			envio.writeObject(mac);
-			envio.flush();
-			
 			while(true){
+				
+				//Pega IP e MAC
+				String mac = HandshakeClient.HandShake();
+								
 				//Captura input do teclado
 				BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 				System.out.println("Insira o texto a ser enviado: ");
@@ -48,12 +44,14 @@ public class Cliente {
 				
 				//adicionando parametros de vericação ao String principal de texto
 				String aux = text;
-				text = CRCvalue.concat(checksumValue);
-				text = text.concat(aux);
+				text = mac.concat(CRCvalue); //MAC + CRC
+				text = text.concat(checksumValue); //MAC + CRC + CHECKSUM
+				text = text.concat(aux); //MAC + CRC + CHECKSUM + INFO
 				System.out.println(text+" "+text.length());
 		
 				
 				//Envia para o servidor
+				ObjectOutputStream envio = new ObjectOutputStream(client.getOutputStream());
 				envio.writeObject(text);
 				envio.flush();
 			
