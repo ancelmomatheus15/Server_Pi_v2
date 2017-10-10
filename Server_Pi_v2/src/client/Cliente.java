@@ -46,6 +46,7 @@ public class Cliente {
 				System.out.println("CRC: "+CRCvalue);
 				text = Integer.toString(CRCvalue) + text;
 				
+				
 				//Envia para o servidor
 				ObjectOutputStream envio = new ObjectOutputStream(client.getOutputStream());
 				envio.writeObject(text);
