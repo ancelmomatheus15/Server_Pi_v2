@@ -71,6 +71,7 @@ public class Server extends Thread{
 		if(Handshake.buscaMac(MAC)==true){
 			System.out.println("HANDSHAKE: OK");
 			int packCRC;
+			String packChecksum;
 			
 			try{
 				// Cria uma buffer que irá armazenar as informações enviadas pelo cliente
@@ -85,16 +86,21 @@ public class Server extends Thread{
 					cypher = entrada.readLine();
 				}
 
-	            int aux = cypher.length();
-	            cypher = cypher.substring(11, aux);
+	            int aux = cypher.length();            
 	            packCRC = Integer.parseInt(cypher.substring(7, 11));
+	            packChecksum = cypher.substring(12, 28);
+	            cypher = cypher.substring(29, aux);
 	            
 	            //validar se a mensagem foi corrompida
-	            if (CRC.calcCRC(cypher) == packCRC){//como incluir mais coisas no envio
+	            if (CRC.calcCRC(cypher) == packCRC){
 	            	System.out.println("CRC: OK");
 	            	
-	            	System.out.println("Servidor- Informação original: "+ cypher);	
-	            	System.out.println("Servidor- Decrypt: "+ Decrypt.decrypt(cypher, key)); 
+	            	if(packChecksum == "h"){
+	            		System.out.println("CHECKSUM: OK");
+	            		
+	            		System.out.println("Servidor- Informação original: "+ cypher);	
+	            		System.out.println("Servidor- Decrypt: "+ Decrypt.decrypt(cypher, key));
+	            	}	            	 
 	            }
 	            else{
 	            	System.out.println("ERRO: Mensagem corrompida");
