@@ -30,7 +30,7 @@ public class Handshake {
 	
 private static List leTxt() {
 		
-		File arquivo = new File("C:\\Users\\Matheus Ancelmo\\Desktop\\regMac.txt");
+		File arquivo = new File("C:\\Users\\Ferretti\\Desktop\\regMac.txt");
 		List<String> enderecos = new ArrayList<String>();		
 		
 		try {

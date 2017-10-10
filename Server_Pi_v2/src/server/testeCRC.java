@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 
 public class testeCRC { 
 
-    public static void main(String[] args) { 
+	public static String calcCRCS(String text) { 
 
         int[] table = {
             0x0000, 0xC0C1, 0xC181, 0x0140, 0xC301, 0x03C0, 0x0280, 0xC241,
@@ -42,23 +42,15 @@ public class testeCRC {
             0x8201, 0x42C0, 0x4380, 0x8341, 0x4100, 0x81C1, 0x8081, 0x4040,
         };
 
-        String text = "";
-        try{
-        	//Captura input do teclado
-			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-			System.out.println("Insira o texto a ser enviado: ");
-			text = in.readLine();
-        }catch(Exception e){
-        	e.printStackTrace();
-        }
-        
         byte[] bytes = text.getBytes();
         int crc = 0x0000;
         for (byte b : bytes) {
             crc = (crc >>> 8) ^ table[(crc ^ b) & 0xff];
         }
 
-        System.out.println("CRC16 = " + Integer.toHexString(crc));
+        String aux = Integer.toHexString(crc);
+        System.out.println("CRC16 = " + aux);
+		return aux;
 		
 		//http://introcs.cs.princeton.edu/java/61data/CRC16.java
 

@@ -45,7 +45,12 @@ public class Server extends Thread{
 		
 		String key = "1234567891234567";
 		boolean read1 = false;
-		String MAC="";
+		
+		String packMac = "";
+		String packCRC = "";
+		String packChecksum = "";
+		String rawData = "";
+		
 		if(read1 ==false){
 			
 			try{
@@ -54,9 +59,19 @@ public class Server extends Thread{
 			
 				/* Faz a leitura das informações enviadas pelo cliente as amazenam na variável "cypher"
 				* e decifra a informação, exibindo no console*/
-				MAC = entrada.readLine();
-				int aux=MAC.length();
-				MAC = MAC.substring(7, aux);
+				rawData = entrada.readLine();
+				
+				int aux = rawData.length();
+	            packMac = rawData.substring(7,24);
+	            packCRC = rawData.substring(24, 28);
+	            packChecksum = rawData.substring(28, 60);
+	            rawData = rawData.substring(60, aux);
+	            System.out.println("data "+rawData);
+	            System.out.println("mac "+packMac);
+	            System.out.println("crc "+packCRC);
+	            System.out.println("checasuma "+packChecksum);
+	            
+
 				read1= true;
             
 			}catch(IOException e){
@@ -65,51 +80,28 @@ public class Server extends Thread{
 			
 		}
 		
-		if(Handshake.buscaMac(MAC)==true){
+		if(Handshake.buscaMac(packMac)==true){
 			System.out.println("HANDSHAKE: OK");
-			String packCRC = "";
-			String packChecksum = "";
 			
-			try{
-				// Cria uma buffer que irá armazenar as informações enviadas pelo cliente
-				BufferedReader entrada = new BufferedReader(new InputStreamReader(aceitar.getInputStream()));
-				
-	            /* Faz a leitura das informações enviadas pelo cliente as amazenam na variável "cypher"
-	             * e decifra a informação, exibindo no console
-	            */
-				
-				String cypher = null;
-				while(cypher == null){
-					cypher = entrada.readLine();
-				}
-
-	            int aux = cypher.length();            
-	            packCRC = cypher.substring(7, 11);
-	            packChecksum = cypher.substring(12, 28);
-	            cypher = cypher.substring(29, aux);
-	            
-	            //validar se a mensagem foi corrompida
-	            if (CRC.calcCRC(cypher) == packCRC){
-	            	System.out.println("CRC: OK");
+			//validar se a mensagem foi corrompida
+	        if (testeCRC.calcCRCS(rawData).equals(packCRC)){
+	            System.out.println("CRC: OK");
 	            	
-	            	if(Checksum.md5(cypher) == packChecksum){
-	            		System.out.println("CHECKSUM: OK");
+	            if(Checksum.md5(rawData).equals(packChecksum)){
+	            	System.out.println("CHECKSUM: OK");
 	            		
-	            		System.out.println("Servidor- Informação original: "+ cypher);	
-	            		System.out.println("Servidor- Decrypt: "+ Decrypt.decrypt(cypher, key));
-	            	}	            	 
-	            }
-	            else{
-	            	System.out.println("ERRO: Mensagem corrompida");
-	            }  	
-
-			}catch(IOException e){
-				System.out.println("Servidor- IOException "+e.getMessage());
-			}
-		}else{
-			System.out.println("SERVIDOR - ERRO DE VALIDAÇÂO MAC ADRESS");
-		}
+	            		System.out.println("Servidor- Informação original: "+ rawData);	
+	            		System.out.println("Servidor- Decrypt: "+ Decrypt.decrypt(rawData, key));
+	          	}else{
+	          		System.out.println("ERRO! falha no Checksum");
+	          	}
 		
-	}
+	        }else{
+	        	System.out.println("ERRO! falha no CRC");
+	        }
 
+       }else{
+	        System.out.println("ERRO! falha no handshake");
+       }
+	}
 }
