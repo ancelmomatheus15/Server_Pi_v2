@@ -24,12 +24,9 @@ public class Cliente {
 			
 			//System.out.println("Cliente- MAC: "+mac);
 			//Envia para o servidor
-			ObjectOutputStream envioMac = new ObjectOutputStream(client.getOutputStream());
-			envioMac.writeObject(mac);
-			
-			//Encerra o processo
-			envioMac.close();
-			System.out.println("Cliente- Conexão encerrada");
+			ObjectOutputStream envio = new ObjectOutputStream(client.getOutputStream());
+			envio.writeObject(mac);
+			envio.flush();
 			
 			while(true){
 				//Captura input do teclado
@@ -42,7 +39,7 @@ public class Cliente {
 				System.out.println("Cliente- Cypher: "+text);
 			
 				//Calculo do CRC
-				int CRCvalue = CRC.calcCRC(text);
+				String CRCvalue = CRC.calcCRC(text);
 				System.out.println("CRC: "+CRCvalue);
 				
 				//Calculo do Checksum
@@ -50,13 +47,15 @@ public class Cliente {
 				System.out.println("Checksum: "+checksumValue);
 				
 				//adicionando parametros de vericação ao String principal de texto
-				text = Integer.toString(CRCvalue) + text;
-				text = checksumValue+ text;
+				String aux = text;
+				text = CRCvalue.concat(checksumValue);
+				text = text.concat(aux);
+				System.out.println(text+" "+text.length());
 		
 				
 				//Envia para o servidor
-				ObjectOutputStream envio = new ObjectOutputStream(client.getOutputStream());
 				envio.writeObject(text);
+				envio.flush();
 			
 				//Encerra o processo
 				envio.close();

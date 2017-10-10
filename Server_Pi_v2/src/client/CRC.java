@@ -2,7 +2,7 @@ package client;
 
 public class CRC { 
 
-    public static int calcCRC(String text) { 
+    public static String calcCRC(String text) { 
 
         int[] table = {
             0x0000, 0xC0C1, 0xC181, 0x0140, 0xC301, 0x03C0, 0x0280, 0xC241,
@@ -45,8 +45,9 @@ public class CRC {
             crc = (crc >>> 8) ^ table[(crc ^ b) & 0xff];
         }
 
-        System.out.println("CRC16 = " + Integer.toHexString(crc));
-		return crc;
+        String aux = Integer.toHexString(crc);
+        System.out.println("CRC16 = " + aux);
+		return aux;
 		
 		//http://introcs.cs.princeton.edu/java/61data/CRC16.java
 

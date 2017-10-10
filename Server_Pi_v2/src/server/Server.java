@@ -67,8 +67,8 @@ public class Server extends Thread{
 		
 		if(Handshake.buscaMac(MAC)==true){
 			System.out.println("HANDSHAKE: OK");
-			int packCRC;
-			String packChecksum;
+			String packCRC = "";
+			String packChecksum = "";
 			
 			try{
 				// Cria uma buffer que irá armazenar as informações enviadas pelo cliente
@@ -84,7 +84,7 @@ public class Server extends Thread{
 				}
 
 	            int aux = cypher.length();            
-	            packCRC = Integer.parseInt(cypher.substring(7, 11));
+	            packCRC = cypher.substring(7, 11);
 	            packChecksum = cypher.substring(12, 28);
 	            cypher = cypher.substring(29, aux);
 	            
@@ -92,7 +92,7 @@ public class Server extends Thread{
 	            if (CRC.calcCRC(cypher) == packCRC){
 	            	System.out.println("CRC: OK");
 	            	
-	            	if(packChecksum == "h"){
+	            	if(Checksum.md5(cypher) == packChecksum){
 	            		System.out.println("CHECKSUM: OK");
 	            		
 	            		System.out.println("Servidor- Informação original: "+ cypher);	
