@@ -44,6 +44,7 @@ public class Cliente {
 				//Calculo do CRC
 				int CRCvalue = CRC.calcCRC(text);
 				System.out.println("CRC: "+CRCvalue);
+				text = Integer.toString(CRCvalue) + text;
 				
 				//Envia para o servidor
 				ObjectOutputStream envio = new ObjectOutputStream(client.getOutputStream());
