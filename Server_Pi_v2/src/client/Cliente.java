@@ -44,8 +44,15 @@ public class Cliente {
 				//Calculo do CRC
 				int CRCvalue = CRC.calcCRC(text);
 				System.out.println("CRC: "+CRCvalue);
-				text = Integer.toString(CRCvalue) + text;
 				
+				//Calculo do Checksum
+				String checksumValue = Checksum.md5(text);
+				System.out.println("Checksum: "+checksumValue);
+				
+				//adicionando parametros de vericação ao String principal de texto
+				text = Integer.toString(CRCvalue) + text;
+				text = checksumValue+ text;
+		
 				
 				//Envia para o servidor
 				ObjectOutputStream envio = new ObjectOutputStream(client.getOutputStream());
