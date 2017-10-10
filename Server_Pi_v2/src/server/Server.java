@@ -66,10 +66,7 @@ public class Server extends Thread{
 	            packCRC = rawData.substring(24, 28);
 	            packChecksum = rawData.substring(28, 60);
 	            rawData = rawData.substring(60, aux);
-	            System.out.println("data "+rawData);
-	            System.out.println("mac "+packMac);
-	            System.out.println("crc "+packCRC);
-	            System.out.println("checasuma "+packChecksum);
+	            
 	            
 
 				read1= true;
