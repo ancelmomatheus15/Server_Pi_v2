@@ -1,5 +1,5 @@
 /**
- * Classe: Checksum
+ * Classe: HandshakeClient
  * Projeto: Server_Pi_v2
  * 
  * git: https://github.com/ancelmomatheus15/Server_Pi_v2.git

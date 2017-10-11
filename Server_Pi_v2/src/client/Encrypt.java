@@ -1,5 +1,5 @@
 /**
- * Classe: Cliente
+ * Classe: Encrypt
  * Projeto: Server_Pi_v2
  * 
  * git: https://github.com/alexandrage/PHP-Java-AES-Encrypt-master
@@ -29,6 +29,7 @@ public class Encrypt {
 	public static String encrypt(String input, String key){
 		  byte[] crypted = null;
 		  
+		  //processo que utiliza as bibliotecas do java para cifrar a mensagem
 		  try{
 		    SecretKeySpec skey = new SecretKeySpec(key.getBytes(), "AES");
 		      Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");

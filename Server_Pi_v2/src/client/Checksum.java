@@ -2,8 +2,8 @@
  * Classe: Checksum
  * Projeto: Server_Pi_v2
  * 
- * git: https://github.com/ancelmomatheus15/Server_Pi_v2.git
- * @author Matheus Ancelmo & Rafael Ferretti
+ * https://stackoverflow.com/questions/304268/getting-a-files-md5-checksum-in-java
+ * @author Bill Cruise
  * 
  * Projeto de conclusão de curso para Análise e Desenvolvimento de Sistemas
  * FATEC da Zona Leste
@@ -27,6 +27,8 @@ public class Checksum {
 	public static String md5(String senha){
 		String tratamento = "";
 		MessageDigest md = null;
+		
+		//realiza o digest do parametro
 		try {
 			md = MessageDigest.getInstance("MD5");
 		} catch (NoSuchAlgorithmException e) {

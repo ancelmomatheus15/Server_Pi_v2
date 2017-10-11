@@ -1,3 +1,17 @@
+/**
+ * Classe: Server
+ * Projeto: Server_Pi_v2
+ * 
+ * git: https://github.com/ancelmomatheus15/Server_Pi_v2.git
+ * @author Matheus Ancelmo & Rafael Ferretti
+ * 
+ * Projeto de conclusão de curso para Análise e Desenvolvimento de Sistemas
+ * FATEC da Zona Leste
+ * 
+ * Outubro/2017
+ * 
+ */
+
 package server;
 
 import java.io.BufferedReader;
@@ -15,17 +29,25 @@ public class Server extends Thread{
 	static ServerSocket conexao = null;
 	static Socket aceitar = null;
 	
+	/**
+	 * @param Socket aux
+	 */
 	public Server(Socket aux){ 
 		aceitar = aux;
 	}
 	
+	/**
+	 * @param String args[]
+	 */
 	public static void main(String args[]){
 		
-		try{//tentando criar uma conexao
-		
-			conexao = new ServerSocket(10010);//Cria um SocketServer com porta 11015
+		//tentando criar uma conexao
+		try{
+			//Cria um SocketServer com porta 10010
+			conexao = new ServerSocket(10010);
 			System.out.println("Servidor- OUVINDO PORTA "+conexao.getLocalPort());
 			
+			//cria um loop para esperar conexões e criar threads individuais para cada uma 
 			while(true){
 				
 				aceitar = conexao.accept();	
@@ -40,7 +62,16 @@ public class Server extends Thread{
 			System.out.println("Servidor- IOException "+e.getMessage());
 		}
 	}
-
+	
+	/**
+	 * Método para tratar cada thread individualmente
+	 * 
+	 * executa as checagens de segurança individualmente até decifrar a informação
+	 * 1-Handshake
+	 * 2-CRC
+	 * 3-Checksum
+	 * 4-Decrypt
+	 */
 	public void start(){
 		
 		String key = "1234567891234567";
@@ -51,6 +82,7 @@ public class Server extends Thread{
 		String packChecksum = "";
 		String rawData = "";
 		
+		//Valida se a thread ja esta conectada
 		if(read1 ==false){
 			
 			try{
@@ -61,14 +93,13 @@ public class Server extends Thread{
 				* e decifra a informação, exibindo no console*/
 				rawData = entrada.readLine();
 				
+				//separa as informações recebidas em partes para cada verificação individual
 				int aux = rawData.length();
 	            packMac = rawData.substring(7,24);
 	            packCRC = rawData.substring(24, 28);
 	            packChecksum = rawData.substring(28, 60);
 	            rawData = rawData.substring(60, aux);
 	            
-	            
-
 				read1= true;
             
 			}catch(IOException e){
@@ -77,6 +108,7 @@ public class Server extends Thread{
 			
 		}
 		
+		//valida se o dispositivo tem autorização
 		if(Handshake.buscaMac(packMac)==true){
 			System.out.println("HANDSHAKE: OK");
 			
@@ -84,9 +116,11 @@ public class Server extends Thread{
 	        if (testeCRC.calcCRCS(rawData).equals(packCRC)){
 	            System.out.println("CRC: OK");
 	            	
+	            //valida o checksum da mensagem
 	            if(Checksum.md5(rawData).equals(packChecksum)){
 	            	System.out.println("CHECKSUM: OK");
 	            		
+	            		//se todas as checagens ocorrerem com sucesso, a mensagem é decifrada e exibida
 	            		System.out.println("Servidor- Informação original: "+ rawData);	
 	            		System.out.println("Servidor- Decrypt: "+ Decrypt.decrypt(rawData, key));
 	          	}else{

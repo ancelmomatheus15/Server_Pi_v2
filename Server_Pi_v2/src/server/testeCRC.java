@@ -1,3 +1,16 @@
+/**
+ * Classe: testeCRC
+ * Projeto: Server_Pi_v2
+ * 
+ * http://introcs.cs.princeton.edu/java/61data/CRC16.java
+ * 
+ * Projeto de conclusão de curso para Análise e Desenvolvimento de Sistemas
+ * FATEC da Zona Leste
+ * 
+ * Outubro/2017
+ * 
+ */
+
 package server;
 
 import java.io.BufferedReader;
@@ -5,8 +18,13 @@ import java.io.InputStreamReader;
 
 public class testeCRC { 
 
+	/**
+	 * @param String text
+	 * @return String aux
+	 */
 	public static String calcCRCS(String text) { 
 
+		//tabela para orientar o calculo do CRC
         int[] table = {
             0x0000, 0xC0C1, 0xC181, 0x0140, 0xC301, 0x03C0, 0x0280, 0xC241,
             0xC601, 0x06C0, 0x0780, 0xC741, 0x0500, 0xC5C1, 0xC481, 0x0440,
@@ -42,17 +60,16 @@ public class testeCRC {
             0x8201, 0x42C0, 0x4380, 0x8341, 0x4100, 0x81C1, 0x8081, 0x4040,
         };
 
+      //loop para realizar o calculo do CRC
         byte[] bytes = text.getBytes();
         int crc = 0x0000;
         for (byte b : bytes) {
             crc = (crc >>> 8) ^ table[(crc ^ b) & 0xff];
         }
 
+      //conversão do resultado hexadecimal para String
         String aux = Integer.toHexString(crc);
-        System.out.println("CRC16 = " + aux);
 		return aux;
-		
-		//http://introcs.cs.princeton.edu/java/61data/CRC16.java
 
     }
 
