@@ -1,3 +1,17 @@
+/**
+ * Classe: Cliente
+ * Projeto: Server_Pi_v2
+ * 
+ * git: https://github.com/ancelmomatheus15/Server_Pi_v2.git
+ * @author Matheus Ancelmo & Rafael Ferretti
+ * 
+ * Projeto de conclusão de curso para Análise e Desenvolvimento de Sistemas
+ * FATEC da Zona Leste
+ * 
+ * Outubro/2017
+ * 
+ */
+
 package client;
 
 import java.io.BufferedReader;
@@ -11,6 +25,9 @@ import client.Encrypt;
 
 public class Cliente {
 
+	/**
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		
 		String key = "1234567891234567";
@@ -31,23 +48,18 @@ public class Cliente {
 				
 					//Encripta a leitura
 					text = Encrypt.encrypt(text, key);
-					System.out.println("Cliente- Cypher: "+text);
 			
 					//Calculo do CRC
 					String CRCvalue = CRC.calcCRC(text);
-					System.out.println("CRC: "+CRCvalue);
 				
 					//Calculo do Checksum
 					String checksumValue = Checksum.md5(text);
-					System.out.println("Checksum: "+checksumValue);
 				
 					//adicionando parametros de vericação ao String principal de texto
 					String aux = text;
 					text = mac.concat(CRCvalue); //MAC + CRC
 					text = text.concat(checksumValue); //MAC + CRC + CHECKSUM
-					text = text.concat(aux); //MAC + CRC + CHECKSUM + INFO
-					System.out.println(text+" "+text.length());
-		
+					text = text.concat(aux); //MAC + CRC + CHECKSUM + INFO		
 				
 					//Envia para o servidor
 					ObjectOutputStream envio = new ObjectOutputStream(client.getOutputStream());

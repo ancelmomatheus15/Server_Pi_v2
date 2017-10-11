@@ -1,3 +1,17 @@
+/**
+ * Classe: Checksum
+ * Projeto: Server_Pi_v2
+ * 
+ * git: https://github.com/ancelmomatheus15/Server_Pi_v2.git
+ * @author Matheus Ancelmo & Rafael Ferretti
+ * 
+ * Projeto de conclusão de curso para Análise e Desenvolvimento de Sistemas
+ * FATEC da Zona Leste
+ * 
+ * Outubro/2017
+ * 
+ */
+
 package client;
 
 import java.net.InetAddress;
@@ -7,6 +21,10 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 public class HandshakeClient {
+	
+	/** 
+	 * @return String macAdress
+	 */
 	
 	public static String HandShake(){
 		
