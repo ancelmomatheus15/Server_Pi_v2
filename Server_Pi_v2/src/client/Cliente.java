@@ -35,7 +35,7 @@ public class Cliente {
 			while(true){
 				try{
 					//Cria o socket com o nome do servidor e a porta
-					Socket client = new Socket("Ferretti-PC", 10010);	
+					Socket client = new Socket("192.168.0.105", 10010);	
 					System.out.println("Cliente- CONECTADO");
 			
 					//Pega IP e MAC
@@ -71,7 +71,7 @@ public class Cliente {
 					System.out.println("Cliente- Conexão encerrada");
 				}
 				catch(Exception e){
-					System.out.println("Cliente: ERRO!" +e.getMessage());			
+					e.printStackTrace();			
 				}
 		}
 		

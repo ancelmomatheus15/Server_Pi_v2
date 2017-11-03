@@ -37,10 +37,6 @@ public class Handshake {
 			if(string.equals(buscaMacs)) {
 				return true;
 			}
-			else {
-				System.out.println("MAC ACEITO");
-				return false;
-			}
 		}
 		
 		return false;
@@ -51,7 +47,7 @@ public class Handshake {
 	 */
 private static List leTxt() {
 		
-		File arquivo = new File("C:\\Users\\Ferretti\\Desktop\\regMac.txt");
+		File arquivo = new File("C:\\Users\\Matheus Ancelmo\\Desktop\\regMac.txt");
 		List<String> enderecos = new ArrayList<String>();		
 		
 		try {

@@ -110,19 +110,19 @@ public class Server extends Thread{
 		
 		//valida se o dispositivo tem autorização
 		if(Handshake.buscaMac(packMac)==true){
-			System.out.println("HANDSHAKE: OK");
+			System.out.println(Thread.currentThread().getId() + "- HANDSHAKE: OK");
 			
 			//validar se a mensagem foi corrompida
 	        if (testeCRC.calcCRCS(rawData).equals(packCRC)){
-	            System.out.println("CRC: OK");
+	            System.out.println(Thread.currentThread().getId() + "- CRC: OK");
 	            	
 	            //valida o checksum da mensagem
 	            if(Checksum.md5(rawData).equals(packChecksum)){
-	            	System.out.println("CHECKSUM: OK");
+	            	System.out.println(Thread.currentThread().getId() + "- CHECKSUM: OK");
 	            		
 	            		//se todas as checagens ocorrerem com sucesso, a mensagem é decifrada e exibida
-	            		System.out.println("Servidor- Informação original: "+ rawData);	
-	            		System.out.println("Servidor- Decrypt: "+ Decrypt.decrypt(rawData, key));
+	            		System.out.println(Thread.currentThread().getId() + "- Servidor- Informação original: "+ rawData);	
+	            		System.out.println(Thread.currentThread().getId() + "- Servidor- Decrypt: "+ Decrypt.decrypt(rawData, key));
 	          	}else{
 	          		System.out.println("ERRO! falha no Checksum");
 	          	}
