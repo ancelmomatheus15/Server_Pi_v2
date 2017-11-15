@@ -4,11 +4,13 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Enumeration;
 
 public class TesteMAC_PI {
 
 	public static void main(String[] args) {
 		busca();
+		busca2();
 	}
 	
 	public static void busca (){
@@ -35,6 +37,7 @@ public class TesteMAC_PI {
                         System.out.format("%02X%s",
                                 mac[i], (i < mac.length - 1) ? "-" : "");
                     }
+                    System.out.println("\n");
                 } else {
                     System.out.println("Address doesn't exist or is not " +
                             "accessible.");
@@ -49,6 +52,40 @@ public class TesteMAC_PI {
             e.printStackTrace();
         }
 		
+	}
+	
+	public static void busca2(){
+		
+		try {
+
+	        Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+	        while(networkInterfaces.hasMoreElements())
+	        {
+	            NetworkInterface network = networkInterfaces.nextElement();
+	            System.out.println("network : " + network);
+	            byte[] mac = network.getHardwareAddress();
+	            if(mac == null)
+	            {
+	                System.out.println("null mac");             
+	            }
+	            else
+	            {
+	                System.out.print("MAC address : ");
+
+	                StringBuilder sb = new StringBuilder();
+	                for (int i = 0; i < mac.length; i++)
+	                {
+	                    sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));        
+	                }
+	                System.out.println(sb.toString());  
+	                break;
+	            }
+	        }
+	    } catch (SocketException e){
+
+	        e.printStackTrace();
+
+	    }
 	}
 
 }
